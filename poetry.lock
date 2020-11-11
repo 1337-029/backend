@@ -221,7 +221,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 name = "python-dotenv"
 version = "0.15.0"
 description = "Add .env support to your django/flask apps in development and deployments"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -300,7 +300,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "897cca925a722c558fd6a3c11a307fe9a278e82255e784615593ba6a89734e65"
+content-hash = "c318dcd5640fcffc1a5c1102500e607d95accbe7c52689843e6ca892d7c39ad0"
 
 [metadata.files]
 appdirs = [

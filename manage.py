@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import os
 import sys
-import dotenv
+from dotenv import load_dotenv
 
 
 def main():
     """Run administrative tasks."""
-    dotenv.load_dotenv(".envs/dev.env")
+    load_dotenv(".envs/dev/django.env")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "leet_chat_backend.settings")
     try:
         from django.core.management import execute_from_command_line

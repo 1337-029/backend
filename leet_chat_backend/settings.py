@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security #
 ############
 
-SECRET_KEY = environ.get("SECRET_KEY", "3oGi5RQhGsJGx4sm")
-DEBUG = strtobool(environ.get("DEBUG", "True"))
-ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "").split(",")
+SECRET_KEY = environ.get("SECRET_KEY")
+DEBUG = int(environ.get("DEBUG", 0))
+ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "").split(" ")
 
 ########
 # Apps #
@@ -27,8 +27,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_extensions",
 ]
+
+if DEBUG:
+    INSTALLED_APPS.append("django_extensions")
 
 ##############
 # Middleware #
@@ -50,10 +52,8 @@ MIDDLEWARE = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2"
-        if environ.get("DATABASE_HOST")
-        else "django.db.backends.sqlite3",
-        "NAME": environ.get("DATABASE_NAME") or BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": environ.get("DATABASE_NAME"),
         "HOST": environ.get("DATABASE_HOST"),
         "PORT": environ.get("DATABASE_PORT"),
         "USER": environ.get("DATABASE_USER"),
