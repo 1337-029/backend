@@ -1,5 +1,5 @@
 from distutils.util import strtobool
-from os import environ
+from os import environ, path
 from pathlib import Path
 
 ###############
@@ -8,29 +8,61 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 ############
 # Security #
 ############
 
 SECRET_KEY = environ.get("SECRET_KEY")
-DEBUG = int(environ.get("DEBUG", 0))
-ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "").split(" ")
+DEBUG = int(environ.get("DEBUG", 1))
+ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "*").split(" ")
+
 
 ########
 # Apps #
 ########
 
 INSTALLED_APPS = [
+    "baton",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "apps.api_docs",
+    "baton.autodiscover",
 ]
 
 if DEBUG:
     INSTALLED_APPS.append("django_extensions")
+
+#########
+# ADMIN #
+#########
+
+AUTHOR = "Dhvcc"
+ORG_URL = "https://github.com/1337-029"
+REPO_URL = ORG_URL + "/backend"
+ISSUE_URL = REPO_URL + "/issues"
+
+BATON = {
+    "SITE_HEADER": "Leet chat",
+    "SITE_TITLE": "Leet chat",
+    "INDEX_TITLE": "Site administration",
+    "SUPPORT_HREF": ISSUE_URL,
+    "COPYRIGHT": f"copyright © 2020 <a href=\"{ORG_URL}\">{AUTHOR}</a>",
+    "POWERED_BY": f"<a href=\"{ORG_URL}\">{AUTHOR}</a>",
+    "CONFIRM_UNSAVED_CHANGES": True,
+    "SHOW_MULTIPART_UPLOADING": True,
+    "ENABLE_IMAGES_PREVIEW": True,
+    "CHANGELIST_FILTERS_IN_MODAL": True,
+    "CHANGELIST_FILTERS_ALWAYS_OPEN": False,
+    "MENU_ALWAYS_COLLAPSED": False,
+    "MENU_TITLE": "Administration panel",
+    "GRAVATAR_DEFAULT_IMG": "identicon",
+}
 
 ##############
 # Middleware #

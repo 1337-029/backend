@@ -1,6 +1,10 @@
-from django.contrib import admin
-from django.urls import path
+from baton.autodiscover import admin
+from django.urls import path, include
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    # Admin
+    path('admin/', admin.site.urls),
+    path('baton/', include('baton.urls')),
+    # API docs
+    path("", include("apps.api_docs.urls")),
 ]
