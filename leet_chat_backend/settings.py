@@ -8,7 +8,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 ############
 # Security #
 ############
@@ -16,7 +15,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("SECRET_KEY")
 DEBUG = int(environ.get("DEBUG", 1))
 ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "*").split(" ")
-
 
 ########
 # Apps #
@@ -122,6 +120,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ###########
 # Serving #
 ###########
+if not DEBUG:
+    # AWS
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_ADDRESSING_STYLE = "virtual"
 
 STATIC_URL = "/static/"
 

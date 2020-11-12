@@ -8,6 +8,7 @@ services:
       - "80:8000"
     env_file:
       - .envs/dev/django.env
+      - .envs/dev/aws.env
     depends_on:
       - db
 
