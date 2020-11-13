@@ -13,6 +13,7 @@ services:
       - db
 
   db:
+    restart: unless-stopped
     image: postgres:12
     volumes:
     - postgres_data:/var/lib/postgresql/data

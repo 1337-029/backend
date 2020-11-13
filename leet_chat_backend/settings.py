@@ -1,5 +1,4 @@
-from distutils.util import strtobool
-from os import environ, path
+from os import environ
 from pathlib import Path
 
 ###############
@@ -52,8 +51,8 @@ BATON = {
     "SITE_TITLE": "Leet chat",
     "INDEX_TITLE": "Site administration",
     "SUPPORT_HREF": ISSUE_URL,
-    "COPYRIGHT": f"copyright © 2020 <a href=\"{ORG_URL}\">{AUTHOR}</a>",
-    "POWERED_BY": f"<a href=\"{ORG_URL}\">{AUTHOR}</a>",
+    "COPYRIGHT": f'copyright © 2020 <a href="{ORG_URL}">{AUTHOR}</a>',
+    "POWERED_BY": f'<a href="{ORG_URL}">{AUTHOR}</a>',
     "CONFIRM_UNSAVED_CHANGES": True,
     "SHOW_MULTIPART_UPLOADING": True,
     "ENABLE_IMAGES_PREVIEW": True,
@@ -69,13 +68,11 @@ BATON = {
 #######
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 ##############
@@ -138,8 +135,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ###########
 if not DEBUG:
     # AWS
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME")
