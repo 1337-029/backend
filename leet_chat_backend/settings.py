@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
+    "drf_spectacular",
     "apps.api_docs",
     "baton.autodiscover",
 ]
@@ -60,6 +62,20 @@ BATON = {
     "MENU_ALWAYS_COLLAPSED": False,
     "MENU_TITLE": "Administration panel",
     "GRAVATAR_DEFAULT_IMG": "identicon",
+}
+
+#######
+# API #
+#######
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
 }
 
 ##############
@@ -127,6 +143,8 @@ if not DEBUG:
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = environ.get("AWS_S3_REGION_NAME")
+    AWS_S3_SIGNATURE_VERSION = environ.get("AWS_S3_SIGNATURE_VERSION")
     AWS_S3_ADDRESSING_STYLE = "virtual"
 
 STATIC_URL = "/static/"

@@ -1,9 +1,17 @@
 from django.urls import path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView
+)
 
-from apps.api_docs import views
+from django.shortcuts import render
 
 urlpatterns = [
-    path("openapi/", views.schema_view, name="openapi"),
-    path("openapi-json/", views.json_schema_view, name="openapi-json"),
-    path("", views.api_docs_view, name="api-docs-view")
+    # Schemas
+    path("schema", SpectacularAPIView.as_view(), name='schema'),
+    # Ui
+    path("", lambda request: render(request, "api_docs/index.html"), name="api-docs-rapidoc"),
+    path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='api-docs-swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='api-docs-redoc'),
 ]
