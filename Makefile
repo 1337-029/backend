@@ -4,8 +4,7 @@
 
 .PHONY: help init dev \
  		test check fix \
- 		up down restart-web restart-db \
- 		test-ignore
+ 		up down restart-web restart-db test-ignore
 
 .ONESHELL:
 
@@ -21,17 +20,57 @@ help:
 
 init:
 	@mkdir .envs .envs/prod
-	@if [[ -f .envs/prod/django.env ]]; then
-	@	echo ".envs/prod/django.env file already exists"
-	@else
-	@	echo; # TODO: create empty env file with keys
+	@if [ -f .envs/prod/django.env ]; then echo ".envs/prod/django.env file already exists"
+	@else cat <<EOF > .envs/prod/django.env
+	@DEBUG=0
+	@SECRET_KEY=
+	@ALLOWED_HOSTS=""
+	@
+	@DATABASE_HOST=db
+	@DATABASE_PORT=5432
+	@DATABASE_NAME=
+	@DATABASE_USER=
+	@DATABASE_PASSWORD=
+	@EOF
 	@fi
+
+	@if [ -f .envs/prod/aws.env ]; then echo ".envs/prod/aws.env file already exists"
+	@else cat <<EOF > .envs/prod/aws.env
+	@AWS_ACCESS_KEY_ID=
+	@AWS_SECRET_ACCESS_KEY=
+	@AWS_STORAGE_BUCKET_NAME=
+	@AWS_S3_REGION_NAME=
+	@AWS_S3_SIGNATURE_VERSION=
+	@EOF
+	@fi
+
+	@if [ -f .envs/prod/postgres.env ]; then echo ".envs/prod/postgres.env file already exists"
+	@else cat <<EOF > .envs/prod/postgres.env
+	@POSTGRES_USER=postgres
+	@POSTGRES_PASSWORD=
+	@POSTGRES_DB=postgres
+	@EOF
+	@fi
+
+	@poetry install --no-dev --no-root
 
 dev:
 	@mkdir .envs .envs/dev
+	@if [ -f .envs/dev/django.env ]; then echo ".envs/dev/django.env file already exists"
+	@else cat <<EOF > .envs/dev/django.env
+	@DEBUG=1
+	@SECRET_KEY=
+	@ALLOWED_HOSTS="*"
+	@
+	@DATABASE_HOST=localhost
+	@DATABASE_PORT=5432
+	@DATABASE_NAME=
+	@DATABASE_USER=
+	@DATABASE_PASSWORD=
+	@EOF
+	@fi
 	@poetry install
-	#TODO
-	@#pre-commit install -t=pre-commit -t=pre-push
+	@pre-commit install -t=pre-commit -t=pre-push
 
 ###############
 # Code checks #
@@ -54,15 +93,16 @@ fix:
 	@echo;
 	@echo "autoflake"
 	@echo "========="
-	@autoflake . --recursive --in-place --exclude=__init__.py,build,dist,.git,.eggs,migrations,venv
+	@autoflake . --recursive --in-place --remove-all-unused-imports --remove-duplicate-keys \
+				--exclude=__init__.py,build,dist,.git,.eggs,migrations,venv
 	@echo;
 	@echo "isort"
 	@echo "====="
 	@isort .
 
-##################
-# Docker compose #
-##################
+##########
+# Docker #
+##########
 
 restart-web:
 	@docker-compose -f $(COMPOSE_PATH) restart web
@@ -75,10 +115,6 @@ up:
 
 down:
 	@docker-compose -f $(COMPOSE_PATH) down
-
-##############
-# Dockerfile #
-##############
 
 test-ignore:
 	@cat <<EOF > Dockerfile.build-context

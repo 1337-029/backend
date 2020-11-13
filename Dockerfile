@@ -20,14 +20,9 @@ ENV POETRY_VERSION=1.1.4
 RUN pip install "poetry==$POETRY_VERSION"
 RUN python -m venv /venv
 
-COPY pyproject.toml poetry.lock ./
-RUN . /venv/bin/activate && echo "$DEBUG" && \
-    if [ "$DEBUG" = "1" ] ; \
-     then \
-      poetry install --no-dev --no-root ; \
-     else \
-      poetry install --no-root ; \
-    fi
+COPY pyproject.toml poetry.lock Makefile ./
+RUN apt-get -y install make
+RUN . /venv/bin/activate && make init
 
 ###
 # Final image that will contain only venv and app
