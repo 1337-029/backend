@@ -1,6 +1,5 @@
 from baton.autodiscover import admin
 from django.urls import include, path
-from rest_framework.authtoken import views
 
 urlpatterns = [
     # Admin
@@ -9,5 +8,5 @@ urlpatterns = [
     # API docs
     path("", include("apps.api_docs.urls")),
     # API Auth
-    path("api-token-auth/", views.ObtainAuthToken.as_view(), name="api-token-auth"),
+    path("", include("apps.auth.urls")),
 ]
