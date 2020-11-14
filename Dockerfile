@@ -22,7 +22,10 @@ RUN python -m venv /venv
 
 COPY pyproject.toml poetry.lock Makefile ./
 RUN apt-get -y install make
-RUN . /venv/bin/activate && make init
+
+RUN . /venv/bin/activate && \
+    if [ "$DEBUG" = "1" ]; then make all; else make prod; fi && \
+    mv .envs /.envs
 
 ###
 # Final image that will contain only venv and app
@@ -30,6 +33,7 @@ RUN . /venv/bin/activate && make init
 FROM base as final
 
 COPY --from=builder /venv /venv
+COPY --from=builder /.envs ./.envs
 
 COPY docker-entrypoint.sh manage.py ./
 COPY leet_chat_backend ./leet_chat_backend

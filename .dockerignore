@@ -141,6 +141,9 @@ cython_debug/
 
 .idea/
 .git/
+.envs/
+.flake8
+.github
 .gitignore
 LICENSE
 README.md
