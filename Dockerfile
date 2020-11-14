@@ -24,8 +24,7 @@ COPY pyproject.toml poetry.lock Makefile ./
 RUN apt-get -y install make
 
 RUN . /venv/bin/activate && \
-    if [ "$DEBUG" = "1" ]; then make all; else make prod; fi && \
-    mv .envs /.envs
+    if [ "$DEBUG" = "1" ]; then poetry install --no-root; else poetry install --no-dev --no-root; fi
 
 ###
 # Final image that will contain only venv and app
@@ -33,7 +32,6 @@ RUN . /venv/bin/activate && \
 FROM base as final
 
 COPY --from=builder /venv /venv
-COPY --from=builder /.envs ./.envs
 
 COPY docker-entrypoint.sh manage.py ./
 COPY leet_chat_backend ./leet_chat_backend
