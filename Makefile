@@ -2,8 +2,9 @@
 # Config #
 ##########
 
-COMPOSE_DIR = ./
-COMPOSE_PATH = $(COMPOSE_DIR)docker-compose.yml
+# get COMPOSE_DIR from ENV or set to ./ if not present
+COMPOSE_DIR ?= ./
+COMPOSE_PATH = $(COMPOSE_DIR)/docker-compose.yml
 
 .PHONY: help prod dev all \
  		test check fix \
@@ -172,7 +173,9 @@ restart-db:
 	@docker-compose -f $(COMPOSE_PATH) restart db
 
 up:
-	@docker-compose -f $(COMPOSE_PATH) up --build -d
+	@# This is needed to load DEBUG from django.env to Dockerfile
+	@# More about the problem in compose file or https://github.com/docker/compose/issues/5600
+	@. .envs/prod/django.env && docker-compose -f $(COMPOSE_PATH) up --build -d
 
 down:
 	@docker-compose -f $(COMPOSE_PATH) down

@@ -11,21 +11,10 @@ To start containers run
 
 ```bash
 make up
-# or
-docker-compose up --build # --build to rebuild images
 ```
 
-Restart container with
+Makefile usage is highly recommended due to `docker-compose`'s env limitations.
+Also this improves enables you to store compose path in a variable
 
-```bash
-make r-web # restart backend
-make r-db # restart db
-```
 
-# Develop
-
-Initialize dev environment with
-
-```bash
-make dev
-```
+...

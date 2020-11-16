@@ -15,6 +15,10 @@ WORKDIR /app
 ###
 FROM base as builder
 
+# Using ARG to pass the environment var to Dockerfile from docker-compose.yml
+ARG DEBUG
+ENV DEBUG $DEBUG
+
 ENV POETRY_VERSION=1.1.4
 
 RUN pip install "poetry==$POETRY_VERSION"
@@ -25,6 +29,7 @@ RUN apt-get -y install make
 
 RUN . /venv/bin/activate && \
     if [ "$DEBUG" = "1" ]; then poetry install --no-root; else poetry install --no-dev --no-root; fi
+
 
 ###
 # Final image that will contain only venv and app
