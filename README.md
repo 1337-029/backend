@@ -1,4 +1,4 @@
-# Leet chat backend
+# Leet chat backend [NO LONGER MAINTAINED]
 
 # Requirements
 
